@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  @apply bg-canvas text-ink font-sans antialiased;
+}
+
+@layer components {
+  .card {
+    @apply bg-white rounded-xl2 shadow-card p-6;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors;
+  }
+  .btn-primary {
+    @apply btn bg-brand-500 text-white hover:bg-brand-600 disabled:bg-brand-300 disabled:cursor-not-allowed;
+  }
+  .btn-ghost {
+    @apply btn bg-transparent text-ink hover:bg-brand-50;
+  }
+  .btn-outline {
+    @apply btn border border-slate-200 bg-white text-ink hover:bg-slate-50;
+  }
+  .input {
+    @apply w-full px-3 py-2 rounded-lg border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-brand-300 focus:border-brand-400;
+  }
+  .label {
+    @apply block text-sm font-medium text-ink mb-1;
+  }
+  .pill {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium;
+  }
+  .pill-good { @apply pill bg-brand-100 text-brand-700; }
+  .pill-warn { @apply pill bg-amber-100 text-amber-700; }
+  .pill-bad  { @apply pill bg-rose-100 text-rose-700; }
+  .pill-muted{ @apply pill bg-slate-100 text-slate-600; }
+}
