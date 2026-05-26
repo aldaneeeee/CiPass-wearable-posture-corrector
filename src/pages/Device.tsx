@@ -61,8 +61,12 @@ export default function Device() {
             onChange={e => setUrl(e.target.value)}
           />
           <p className="text-xs text-sub mt-2">
-            After flashing the CiPASS sketch onto your Arduino UNO R4 WiFi, it will print its IP address on the
-            Serial Monitor. Use that IP with port <code>81</code> here.
+            <strong>Local network:</strong> after flashing the CiPASS sketch, the Arduino prints its IP on
+            the Serial Monitor — paste it here with port <code>81</code>, e.g. <code>ws://192.168.1.42:81</code>.
+          </p>
+          <p className="text-xs text-sub mt-1">
+            <strong>Deployed site (Vercel):</strong> run the bridge in <code>bridge/</code> + <code>ngrok http 3001</code>,
+            then paste the <code>wss://…ngrok-free.app</code> URL here. See the README for the full walkthrough.
           </p>
 
           <div className="mt-4 flex items-center gap-2">

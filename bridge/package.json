@@ -1,0 +1,13 @@
+{
+  "name": "cipass-bridge",
+  "version": "0.1.0",
+  "private": true,
+  "description": "WebSocket-to-WebSocket proxy that forwards Arduino R4 readings from your local network to a public ngrok URL.",
+  "main": "bridge.js",
+  "scripts": {
+    "start": "node bridge.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}

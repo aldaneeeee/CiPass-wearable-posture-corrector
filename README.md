@@ -85,6 +85,62 @@ When `VITE_ARDUINO_WS_URL` is empty *and* no URL is configured on the Device pag
 VITE_ARDUINO_WS_URL=ws://192.168.1.42:81
 ```
 
+## Deploying online (Vercel + ngrok bridge)
+
+The Arduino lives on your home LAN, so a deployed Vercel site can't reach it
+directly. The included **bridge** ([bridge/bridge.js](bridge/bridge.js)) fixes
+that by running on your laptop and tunneling Arduino frames out through
+[ngrok](https://ngrok.com/).
+
+```
+browser (https://your-site.vercel.app)
+   │  wss://abc.ngrok-free.app
+   ▼
+ ngrok ──► bridge (localhost:3001) ──► Arduino (ws://192.168.x.x:81)
+```
+
+### 1. Run the bridge
+
+```bash
+cd bridge
+npm install
+ARDUINO_WS_URL=ws://192.168.1.42:81 npm start
+```
+
+Leave this terminal running. It prints `Arduino connected.` once it reaches
+the board, then forwards every frame to any browser that connects.
+
+### 2. Expose it with ngrok
+
+In a second terminal:
+
+```bash
+ngrok http 3001
+```
+
+ngrok prints a public URL like `https://abc-123.ngrok-free.app`. The matching
+WebSocket URL is the same hostname with `wss://`:
+
+```
+wss://abc-123.ngrok-free.app
+```
+
+> Use `ngrok http`, **not** `ngrok tcp` — Vercel sites are served over HTTPS,
+> and browsers will block an insecure `ws://` connection from a secure page.
+> `ngrok http` automatically upgrades to `wss://`.
+
+### 3. Deploy the frontend to Vercel
+
+```bash
+npm install -g vercel
+vercel
+```
+
+Once deployed, open the live site, go to **Device**, and paste your
+`wss://…ngrok-free.app` URL. The dashboard will start showing real readings
+from anywhere in the world — as long as your laptop is running the bridge
+and ngrok.
+
 ## What's not built (yet)
 
 - Real backend / cloud sync — accounts are local-only.
@@ -97,3 +153,4 @@ VITE_ARDUINO_WS_URL=ws://192.168.1.42:81
 - `npm run dev` — Vite dev server on port 5173
 - `npm run build` — TypeScript check + production build
 - `npm run preview` — preview the production build locally
+- `cd bridge && npm start` — run the WS→WS bridge for ngrok/Vercel deploys
